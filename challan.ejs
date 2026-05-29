@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fee Challan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f7fa; }
+        .challan-box { border: 2px dashed #003366; padding: 40px; background: #fff; margin-top: 40px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .school-logo { font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom: 15px; color: #003366; }
+        .payment-box { background-color: #eef2f7; padding: 20px; border-radius: 8px; border: 1px solid #cdd9e5; }
+    </style>
+</head>
+<body>
+
+<div class="container d-flex justify-content-center mb-5">
+    <div class="challan-box" style="width: 650px;">
+        <div class="school-logo">
+            NUST Balochistan Campus<br><small class="text-muted fs-6">Official Fee Challan</small>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-7">
+                <strong>Student Name:</strong> <%= student.name %><br>
+                <strong>Roll Number:</strong> <%= student.student_id %><br>
+                <strong>Department:</strong> <%= student.department %><br>
+                <strong>Semester:</strong> <%= student.semester %>
+            </div>
+            <div class="col-5 text-end">
+                <strong>Date:</strong> <%= new Date().toLocaleDateString() %><br>
+                <strong>Challan Type:</strong> <%= type === 'full' ? 'Full Voucher' : 'Installment' %>
+            </div>
+        </div>
+
+        <table class="table table-bordered mb-4">
+            <thead class="table-light">
+                <tr>
+                    <th>Description</th>
+                    <th class="text-end">Amount (Rs)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if(type === 'full') { %>
+                    <tr>
+                        <td><%= data.voucher_id %> - Full Tuition Fee</td>
+                        <td class="text-end"><%= data.fee_breakdown[0].amount %></td>
+                    </tr>
+                    <tr>
+                        <td><%= data.voucher_id %> - Miscellaneous Fee</td>
+                        <td class="text-end"><%= data.fee_breakdown[1].amount %></td>
+                    </tr>
+                <% } else { %>
+                    <tr>
+                        <td>Installment <%= data.installment_number %> against <%= data.voucher_id %></td>
+                        <td class="text-end"><%= data.amount %></td>
+                    </tr>
+                <% } %>
+                <tr class="table-dark">
+                    <th class="fs-5">Total Payable Amount</th>
+                    <th class="text-end fs-5">Rs. <%= type === 'full' ? (data.amount || data.total_amount) : data.amount %></th>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- PAYMENT METHOD SELECTION FORM -->
+        <form action="/pay/<%= type %>/<%= type === 'full' ? data.voucher_id : data.installment_id %>" method="POST">
+            
+            <div class="payment-box mb-4">
+                <label class="fw-bold mb-2 text-dark">💳 Select Payment Method:</label>
+                <select name="payment_method" class="form-select border-primary" required>
+                    <option value="" disabled selected>-- Choose your payment method --</option>
+                    <option value="online">📱 Online (JazzCash / Easypaisa / NayaPay)</option>
+                    <option value="bank_transfer">🏦 Bank Transfer (NUST Official Account)</option>
+                    <option value="cash">💵 Cash Deposit at Bank Branch</option>
+                </select>
+            </div>
+
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-success btn-lg w-100 shadow-sm fw-bold">✅ Confirm & Pay Now</button>
+                <a href="javascript:history.back()" class="btn btn-link mt-3 text-muted">Cancel Transaction</a>
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

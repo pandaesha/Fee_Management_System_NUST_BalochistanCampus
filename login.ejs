@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NUST Fee Portal - Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { 
+            background: linear-gradient(135deg, #e0eaf5 0%, #8ba3c7 100%); 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .login-card { 
+            border-radius: 15px; 
+            overflow: hidden; 
+            border: none; 
+            box-shadow: 0 15px 35px rgba(0, 51, 102, 0.2); 
+        }
+        .img-header { 
+            width: 100%; 
+            height: 180px; 
+            object-fit: cover; 
+            border-bottom: 3px solid #003366;
+        }
+        .btn-nust { 
+            background-color: #003366; 
+            color: white; 
+            font-weight: bold; 
+            border-radius: 8px;
+            padding: 10px;
+        }
+        .btn-nust:hover { background-color: #002244; color: white; }
+        .text-nust { color: #003366; font-weight: bold; }
+    </style>
+</head>
+<body class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+
+    <div class="card login-card bg-white" style="width: 26rem;">
+        <img src="/images/nbc.jpg" class="img-header" alt="NUST Campus">
+        
+        <div class="card-body p-4">
+            <h3 class="text-center text-nust mb-4">🎓 NUST Fee Portal</h3>
+            
+            <% if(error) { %>
+                <div class="alert alert-danger rounded-3 shadow-sm"><%= error %></div>
+            <% } %>
+
+            <form action="/login" method="POST">
+                <div class="mb-3">
+                    <label class="form-label text-muted fw-bold">Student ID</label>
+                    <input type="text" name="student_id" class="form-control form-control-lg border-primary bg-light" placeholder="e.g. STU001" required>
+                </div>
+                <!-- YAHAN PASSWORD KA FIELD ADD KIYA HAI -->
+                <div class="mb-4">
+                    <label class="form-label text-muted fw-bold">Password</label>
+                    <input type="password" name="password" class="form-control form-control-lg border-primary bg-light" placeholder="Enter Password" required>
+                </div>
+                <button type="submit" class="btn btn-nust w-100 shadow-sm">Secure Login →</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
